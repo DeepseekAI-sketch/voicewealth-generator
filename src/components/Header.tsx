@@ -52,7 +52,7 @@ export function Header({ setTheme, theme }: HeaderProps) {
           <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
             <div className="h-3 w-3 rounded-full bg-white"></div>
           </div>
-          <h1 className="text-xl font-semibold tracking-tight">VoiceWealth</h1>
+          <h1 className="text-xl font-semibold tracking-tight">Energy Voice</h1>
         </div>
         
         <div className="flex items-center gap-4">

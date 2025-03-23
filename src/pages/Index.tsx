@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
@@ -70,9 +69,26 @@ const Index = () => {
     utterance.volume = volume;
     utterance.rate = speed;
     
-    // Set voice based on language and gender preference
+    // Get available voices
     const voices = window.speechSynthesis.getVoices();
-    const languageVoices = voices.filter(voice => voice.lang.includes(currentMessage.language.split('-')[0]));
+    
+    // Make sure voices are loaded, especially important for Arabic
+    if (voices.length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        const availableVoices = window.speechSynthesis.getVoices();
+        setVoiceAndSpeak(utterance, availableVoices);
+      };
+    } else {
+      setVoiceAndSpeak(utterance, voices);
+    }
+    
+    speechSynthesisRef.current = utterance;
+  };
+  
+  const setVoiceAndSpeak = (utterance: SpeechSynthesisUtterance, voices: SpeechSynthesisVoice[]) => {
+    // Filter voices by language
+    const langPrefix = utterance.lang.split('-')[0];
+    const languageVoices = voices.filter(voice => voice.lang.includes(langPrefix));
     
     if (languageVoices.length > 0) {
       // Try to find a voice matching the gender preference
@@ -96,9 +112,14 @@ const Index = () => {
         // If no matching gender voice, use any voice for that language
         utterance.voice = languageVoices[0];
       }
+    } else {
+      // If no matching language voice found, try to find a more general match
+      // For Arabic, sometimes 'ar' isn't directly matched
+      if (langPrefix === 'ar') {
+        const arabicVoice = voices.find(v => v.lang.includes('ar'));
+        if (arabicVoice) utterance.voice = arabicVoice;
+      }
     }
-    
-    speechSynthesisRef.current = utterance;
     
     utterance.onstart = () => setIsPlaying(true);
     utterance.onend = () => {
@@ -113,14 +134,7 @@ const Index = () => {
       toast.error("Error playing voice message");
     };
     
-    // For Arabic voices, we need to ensure the voices are loaded
-    if (window.speechSynthesis.getVoices().length === 0) {
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.speak(utterance);
-      };
-    } else {
-      window.speechSynthesis.speak(utterance);
-    }
+    window.speechSynthesis.speak(utterance);
   };
   
   const pauseMessage = () => {

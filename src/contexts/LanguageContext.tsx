@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 // Define all the translations for the app
 export const translations = {
   'en-US': {
-    appTitle: 'VoiceWealth Generator',
+    appTitle: 'Energy Voice',
     appDescription: 'Transform powerful energy commands into voice messages to attract wealth and abundance. Based on Newton\'s concept of Condescension.',
     currentAffirmation: 'Current Affirmation',
     generateNew: 'Generate New Affirmation',
@@ -21,10 +21,10 @@ export const translations = {
     voiceGender: 'Voice Gender',
     male: 'Male',
     female: 'Female',
-    footer: 'VoiceWealth © {year} • Inspired by Newton\'s principles of condescension',
+    footer: 'Energy Voice © {year} • Inspired by Newton\'s principles of condescension',
   },
   'ar-SA': {
-    appTitle: 'مولد ثروة الصوت',
+    appTitle: 'صوت الطاقة',
     appDescription: 'حول أوامر الطاقة القوية إلى رسائل صوتية لجذب الثروة والوفرة. استنادًا إلى مفهوم تنازل نيوتن.',
     currentAffirmation: 'التأكيد الحالي',
     generateNew: 'إنشاء تأكيد جديد',
@@ -41,10 +41,10 @@ export const translations = {
     voiceGender: 'جنس الصوت',
     male: 'ذكر',
     female: 'أنثى',
-    footer: 'ثروة الصوت © {year} • مستوحاة من مبادئ تنازل نيوتن',
+    footer: 'صوت الطاقة © {year} • مستوحاة من مبادئ تنازل نيوتن',
   },
   'fr-FR': {
-    appTitle: 'Générateur de Richesse Vocale',
+    appTitle: 'Voix Énergétique',
     appDescription: 'Transformez des commandes d\'énergie puissantes en messages vocaux pour attirer richesse et abondance. Basé sur le concept de Condescension de Newton.',
     currentAffirmation: 'Affirmation Actuelle',
     generateNew: 'Générer Nouvelle Affirmation',
@@ -61,7 +61,7 @@ export const translations = {
     voiceGender: 'Genre de Voix',
     male: 'Masculin',
     female: 'Féminin',
-    footer: 'VoiceWealth © {year} • Inspiré par les principes de condescension de Newton',
+    footer: 'Voix Énergétique © {year} • Inspiré par les principes de condescension de Newton',
   }
 };
 
