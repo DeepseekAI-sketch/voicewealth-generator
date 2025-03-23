@@ -1,7 +1,8 @@
 
 import { useState } from 'react';
-import { Volume2, Volume1, VolumeX, Repeat, Circle } from 'lucide-react';
+import { Volume2, Volume1, VolumeX, Repeat, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface VoiceControlsProps {
   volume: number;
@@ -13,12 +14,19 @@ interface VoiceControlsProps {
   language: string;
   setLanguage: (language: string) => void;
   isPlaying: boolean;
+  voiceGender: string;
+  setVoiceGender: (gender: string) => void;
 }
 
 const LANGUAGES = [
   { value: 'en-US', label: 'English' },
   { value: 'ar-SA', label: 'العربية' },
   { value: 'fr-FR', label: 'Français' },
+];
+
+const VOICE_GENDERS = [
+  { value: 'male', labelKey: 'male' },
+  { value: 'female', labelKey: 'female' },
 ];
 
 export function VoiceControls({ 
@@ -30,21 +38,26 @@ export function VoiceControls({
   setAutoRepeat,
   language,
   setLanguage,
-  isPlaying
+  isPlaying,
+  voiceGender,
+  setVoiceGender
 }: VoiceControlsProps) {
   
+  const { t, getTextDirection } = useLanguage();
+  const isRTL = getTextDirection() === 'rtl';
   const VolumeIcon = volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
 
   return (
     <div className="w-full animate-fade-in">
       <div className="glass rounded-2xl p-6 space-y-5">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium opacity-80">Voice Language</label>
+          <label className={`text-sm font-medium opacity-80 ${isRTL ? 'ms-auto' : ''}`}>{t('voiceLanguage')}</label>
           <div className="relative">
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
               className="bg-transparent border border-border rounded-lg px-3 py-1 text-sm appearance-none pr-8 focus:outline-none focus:ring-1 focus:ring-primary"
+              dir={getTextDirection()}
             >
               {LANGUAGES.map((lang) => (
                 <option key={lang.value} value={lang.value}>
@@ -52,7 +65,30 @@ export function VoiceControls({
                 </option>
               ))}
             </select>
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <div className={`absolute ${isRTL ? 'left-2' : 'right-2'} top-1/2 transform -translate-y-1/2 pointer-events-none`}>
+              <svg className="h-4 w-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <label className={`text-sm font-medium opacity-80 ${isRTL ? 'ms-auto' : ''}`}>{t('voiceGender')}</label>
+          <div className="relative">
+            <select
+              value={voiceGender}
+              onChange={(e) => setVoiceGender(e.target.value)}
+              className="bg-transparent border border-border rounded-lg px-3 py-1 text-sm appearance-none pr-8 focus:outline-none focus:ring-1 focus:ring-primary"
+              dir={getTextDirection()}
+            >
+              {VOICE_GENDERS.map((gender) => (
+                <option key={gender.value} value={gender.value}>
+                  {t(gender.labelKey)}
+                </option>
+              ))}
+            </select>
+            <div className={`absolute ${isRTL ? 'left-2' : 'right-2'} top-1/2 transform -translate-y-1/2 pointer-events-none`}>
               <svg className="h-4 w-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -62,9 +98,9 @@ export function VoiceControls({
         
         <div className="space-y-1">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium opacity-80">Volume</label>
+            <label className={`text-sm font-medium opacity-80 ${isRTL ? 'ms-auto' : ''}`}>{t('volume')}</label>
             <div className="flex items-center">
-              <VolumeIcon size={16} className="mr-2 opacity-70" />
+              <VolumeIcon size={16} className={`${isRTL ? 'ml-2' : 'mr-2'} opacity-70`} />
               <span className="text-xs opacity-70">{Math.round(volume * 100)}%</span>
             </div>
           </div>
@@ -81,7 +117,7 @@ export function VoiceControls({
         
         <div className="space-y-1">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium opacity-80">Speed</label>
+            <label className={`text-sm font-medium opacity-80 ${isRTL ? 'ms-auto' : ''}`}>{t('speed')}</label>
             <span className="text-xs opacity-70">{speed.toFixed(1)}x</span>
           </div>
           <input
@@ -96,7 +132,7 @@ export function VoiceControls({
         </div>
         
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium opacity-80">Auto Repeat</label>
+          <label className={`text-sm font-medium opacity-80 ${isRTL ? 'ms-auto' : ''}`}>{t('autoRepeat')}</label>
           <button
             onClick={() => setAutoRepeat(!autoRepeat)}
             className={cn(
@@ -107,7 +143,7 @@ export function VoiceControls({
             )}
           >
             <Repeat size={14} />
-            {autoRepeat ? "On" : "Off"}
+            {autoRepeat ? t('on') : t('off')}
           </button>
         </div>
 

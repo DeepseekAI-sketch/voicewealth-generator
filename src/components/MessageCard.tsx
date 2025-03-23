@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface MessageCardProps {
   message: string;
@@ -21,6 +22,7 @@ export function MessageCard({
   onPause 
 }: MessageCardProps) {
   const isRightToLeft = language === 'ar-SA';
+  const { t } = useLanguage();
   
   return (
     <motion.div
@@ -43,7 +45,7 @@ export function MessageCard({
           {message}
         </div>
         
-        <div className="flex justify-end">
+        <div className={`flex ${isRightToLeft ? 'justify-start' : 'justify-end'}`}>
           <button
             onClick={isPlaying ? onPause : onPlay}
             className={cn(
@@ -56,12 +58,12 @@ export function MessageCard({
             {isCurrentMessage && isPlaying ? (
               <>
                 <Pause size={16} />
-                <span>Pause</span>
+                <span>{t('pause')}</span>
               </>
             ) : (
               <>
                 <Play size={16} />
-                <span>Play</span>
+                <span>{t('play')}</span>
               </>
             )}
           </button>
