@@ -25,8 +25,8 @@ const LANGUAGES = [
 ];
 
 const VOICE_GENDERS = [
-  { value: 'male', labelKey: 'male' },
-  { value: 'female', labelKey: 'female' },
+  { value: 'male', labelKey: 'male' as const },
+  { value: 'female', labelKey: 'female' as const },
 ];
 
 export function VoiceControls({ 
